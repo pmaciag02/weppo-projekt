@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        html,
+        body,
+        form {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #login {
+            padding: 20px;
+            border: 1px solid black;
+        }
+
+        #login div {
+            overflow: auto;
+        }
+
+        #login input {
+            float: right;
+        }
+
+        button {
+            clear: both;
+        }
+
+        .message {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <form method="POST">
+        <div id='login'>
+            <div>
+                Logowanie
+            </div>
+            <div>
+                <input type='text' name='login' />
+                <label>Nazwa użytkownika:</label>
+            </div>
+            <div>
+                <input type='password' name='password' />
+                <label>Hasło:</label>
+            </div>
+            <div>
+                <button>Zaloguj</button>
+            </div>
+            <% if(error) { %>
+                <div class='message'>
+                    <strong>Niepoprawne hasło lub login!</strong>
+                </div>
+            <% } %>
+        </div>
+    </form>
+</body>
+
+</html>

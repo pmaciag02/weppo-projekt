@@ -1,0 +1,81 @@
+<!-- products.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produkty - Nazwa Sklepu</title>
+    <link rel="stylesheet" href="/style.css">
+    <!-- Dodaj dodatkowe pliki CSS, skrypty JavaScript, itp. w razie potrzeby -->
+</head>
+<body>
+
+<header>
+    <h1>Nazwa Sklepu</h1>
+    <nav>
+        <ul>
+            <li><a href="/">Strona Główna</a></li>
+            <li><a href="/produkty">Produkty</a></li>
+            <li><a href="/kontakt">Kontakt</a></li>
+            <%if(!login){%>
+                <li><a href="/login">Zaloguj się</a></li>
+                <li><a href="/zarejestruj">Zarejestruj się</a></li>
+            <%} else { %>
+                <li><a href="/koszyk">Koszyk</a></li>
+                <li><a href="/logout">Wyloguj się</a></li>
+            <% } %>
+            <%if(admin){%>
+                <li><a href="/manage-products">Zarządzaj produktami</a></li>
+                <li><a href="/manage-users">Zarządzaj urzytkownikami</a></li>
+            <%} %>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section class="product-list">
+        <h2>Produkty</h2>
+        
+            <% result.rows.forEach(r => { %>
+                <!-- <% // console.log(`${r.id} ${r.name} ${r.price}`); %> -->
+                <div class="product">
+                    <!-- <img src='/images/${r.name}.jpg' alt="Produkt 1"> -->
+                    <h3> <%= r.name %> </h3>
+                    <p>Cena: <%= r.price %></p>
+                    <a href='/produkty/${r.id}'>Szczegóły</a>
+
+                    <!-- <button onclick="addToCart('${r.id}')">Dodaj do koszyka</button> -->
+                    <button onclick=<%= `window.location.href='/zakup/${r.id}'` %>>Dodaj do koszyka</button>
+                </div>
+            <% }); %>
+        
+
+
+
+
+
+
+        <!-- <div class="product">
+            <img src="/images/product1.jpg" alt="Produkt 1">
+            <h3>Nazwa Produktu 1</h3>
+            <p>Cena: $19.99</p>
+            <a href="/produkt/1">Szczegóły</a>
+            <button onclick="addToCart(1)">Dodaj do koszyka</button>
+        </div>
+        <div class="product">
+            <img src="/images/product2.jpg" alt="Produkt 2">
+            <h3>Nazwa Produktu 2</h3>
+            <p>Cena: $29.99</p>
+            <a href="/produkt/2">Szczegóły</a>
+            <button onclick="addToCart(2)">Dodaj do koszyka</button>
+        </div> -->
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2024 Nazwa Sklepu. Wszelkie prawa zastrzeżone.</p>
+</footer>
+
+</body>
+</html>

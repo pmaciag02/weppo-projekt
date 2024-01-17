@@ -1,0 +1,61 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    Hello world chuju!
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nazwa Sklepu</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header>
+    <h1>Nazwa Sklepu</h1>
+    <nav>
+        <ul>
+            <li><a href="/">Strona Główna</a></li>
+            <li><a href="/produkty">Produkty</a></li>
+            <li><a href="/kontakt">Kontakt</a></li>
+            <%if(!login){%>
+                <li><a href="/login">Zaloguj się</a></li>
+                <li><a href="/zarejestruj">Zarejestruj się</a></li>
+            <%} else { %>
+                <li><a href="/koszyk">Koszyk</a></li>
+                <li><a href="/logout">Wyloguj się</a></li>
+            <% } %>
+            <%if(admin){%>
+                <li><a href="/manage-products">Zarządzaj produktami</a></li>
+                <li><a href="/manage-users">Zarządzaj urzytkownikami</a></li>
+            <%} %>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section class="featured-products">
+        <h2>Najnowsze Produkty</h2>
+    </section>
+
+    <section class="special-offers">
+        <h2>Specjalne Oferty</h2>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2024 Nazwa Sklepu. Wszelkie prawa zastrzeżone.</p>
+</footer>
+
+</body>
+</html>
