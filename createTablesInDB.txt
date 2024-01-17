@@ -1,0 +1,38 @@
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(20) NOT NULL,
+    password VARCHAR(20) NOT NULL
+);
+
+
+
+INSERT INTO users (username, password) VALUES
+    ('login1', 'haslo1'),
+    ('login2', 'haslo2'),
+    ('login3', 'haslo3');
+
+
+
+CREATE TABLE products (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  price DECIMAL(10, 2) NOT NULL
+);
+
+
+INSERT INTO products (name, price) VALUES
+  ('Produkt 1', 19.99),
+  ('Produkt 2', 29.99),
+  ('Produkt 3', 39.99);
+
+
+
+CREATE TABLE orders (
+    orderid SERIAL PRIMARY KEY,
+    status VARCHAR(10) NOT NULL,
+    userid INT NOT NULL,
+    productid INT NOT NULL,
+    FOREIGN KEY (userid) REFERENCES users(id),
+    FOREIGN KEY (productid) REFERENCES products(id)
+);
+
