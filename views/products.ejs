@@ -8,6 +8,28 @@
     <title>Produkty - Nazwa Sklepu</title>
     <link rel="stylesheet" href="/style.css">
     <!-- Dodaj dodatkowe pliki CSS, skrypty JavaScript, itp. w razie potrzeby -->
+    <style>
+        .opis-produktu {
+          display: none; /* Ukryj opis początkowo */
+        }
+    
+        .pokaz-opis {
+          cursor: pointer;
+          color: blue;
+          text-decoration: underline;
+        }
+      </style>
+      <script>
+        function pokazOpis(id) {
+          var opisElement = document.getElementById(id);
+    
+          if (opisElement.style.display === 'none') {
+            opisElement.style.display = 'block';
+          } else {
+            opisElement.style.display = 'none';
+          }
+        }
+      </script>
 </head>
 <body>
 
@@ -43,7 +65,14 @@
                     <!-- <img src='/images/${r.name}.jpg' alt="Produkt 1"> -->
                     <h3> <%= r.name %> </h3>
                     <p>Cena: <%= r.price %></p>
-                    <a href='/produkty/${r.id}'>Szczegóły</a>
+                    <!-- <a href='/produkty/${r.id}'>Szczegóły</a> -->
+
+                    <!-- <%= // console.log(r.id.toString()) %> -->
+                    <p class="pokaz-opis" onclick="pokazOpis('<%= r.id %>')">Opis produktu</p>
+                    <div class="opis-produktu" id='<%= r.id %>'>
+                        <p><%= r.description %></p>
+                      </div>
+                    
 
                     <!-- <button onclick="addToCart('${r.id}')">Dodaj do koszyka</button> -->
                     <button onclick=<%= `window.location.href='/zakup/${r.id}'` %>>Dodaj do koszyka</button>

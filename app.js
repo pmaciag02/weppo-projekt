@@ -134,8 +134,8 @@ app.get('/zakup/:id', authenticate, function (req, res) {
             // console.log(result.rows[0].maxid);
             // var newid = result.rows[0].maxid + 1;
             // console.log(newid);
-            await pool.query(`INSERT INTO orders (orderid, status, userid, productid) VALUES (${result.rows[0].maxid + 1}, 'in cart', ${req.session.userid}, ${id})`);
-            res.redirect('/produkty');
+            await pool.query(`INSERT INTO orders (status, userid, productid) VALUES ('in cart', ${req.session.userid}, ${id})`);
+            res.redirect('/koszyk');
         }
         catch (err) {
             console.log(err);

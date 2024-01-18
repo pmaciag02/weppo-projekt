@@ -16,14 +16,15 @@ INSERT INTO users (username, password) VALUES
 CREATE TABLE products (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
-  price DECIMAL(10, 2) NOT NULL
+  price DECIMAL(10, 2) NOT NULL,
+  description VARCHAR(100) NOT NULL
 );
 
 
-INSERT INTO products (name, price) VALUES
-  ('Produkt 1', 19.99),
-  ('Produkt 2', 29.99),
-  ('Produkt 3', 39.99);
+INSERT INTO products (name, price, description) VALUES
+  ('Produkt 1', 5.99, 'Bardzo fajny produkt.'),
+  ('Produkt 2', 420.69, 'Ekstra fajny produkt.'),
+  ('Produkt 3', 99.99, 'Super fajny produkt.');
 
 
 
