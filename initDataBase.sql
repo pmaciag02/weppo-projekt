@@ -36,4 +36,3 @@ CREATE TABLE orders (
     FOREIGN KEY (userid) REFERENCES users(id),
     FOREIGN KEY (productid) REFERENCES products(id)
 );
-
