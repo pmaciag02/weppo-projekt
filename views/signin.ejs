@@ -1,15 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Document</title>
-    </head>
-    <body>
-        <form method="POST">
-            Wartość z session: <%= sessionValue %>
-            <button>Zapisz</button>
-        </form>
-    </body>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        html,
+        body,
+        form {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #login {
+            padding: 20px;
+            border: 1px solid black;
+        }
+
+        #login div {
+            overflow: auto;
+        }
+
+        #login input {
+            float: right;
+        }
+
+        button {
+            clear: both;
+        }
+
+        .message {
+            color: red;
+        }
+    </style>
+</head>
+
+
+<body>
+    <header>
+        <h1>Nazwa Sklepu</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Strona Główna</a></li>
+                <li><a href="/produkty">Produkty</a></li>
+                <li><a href="/kontakt">Kontakt</a></li>
+                <%if(!login){%>
+                    <li><a href="/login">Zaloguj się</a></li>
+                    <li><a href="/register">Zarejestruj się</a></li>
+                <%} else { %>
+                    <li><a href="/koszyk">Koszyk</a></li>
+                    <li><a href="/logout">Wyloguj się</a></li>
+                <% } %>
+                <%if(admin){%>
+                    <li><a href="/manage-products">Zarządzaj produktami</a></li>
+                    <li><a href="/manage-users">Zarządzaj urzytkownikami</a></li>
+                <%} %>
+            </ul>
+        </nav>
+    </header>
+    
+    <form method="POST">
+        <div id='login'>
+            <div>
+                Rejestracja
+            </div>
+            <div>
+                <input type='text' name='login' />
+                <label>Nazwa użytkownika:</label>
+            </div>
+            <div>
+                <input type='password' name='password' />
+                <label>Hasło:</label>
+            </div>
+            <div>
+                <button>Zarejestruj</button>
+            </div>
+            <% if(error) { %>
+                <div class='message'>
+                    <strong>Login zajęty!</strong>
+                </div>
+            <% } %>
+            <% if(signed) { %>
+                <div class='message'>
+                    <strong>Rejestracja udana! Przejdź do Logowania, aby się zalogować.</strong>
+                </div>
+            <% } %>
+        </div>
+    </form>
+</body>
+
 </html>

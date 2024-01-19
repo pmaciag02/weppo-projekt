@@ -147,7 +147,7 @@ app.get('/zakup/:id', authenticate, function (req, res) {
 app.get('/koszyk', authenticate, (req, res) => {
     (async function main() {
         try {
-            var result = await pool.query("select * from orders join products on orders.productid = products.id and orders.status = 'in cart'");
+            var result = await pool.query(`select * from orders join products on userid = '${req.session.userid}' and orders.productid = products.id and orders.status = 'in cart'`);
             res.render('cart', { login: req.session.valid, admin: req.session.admin, result: result });
         }
         catch (err) {
@@ -217,8 +217,36 @@ app.post('/login', function (req, res) {
 });
 
 
+app.get('/register', function (req, res) {
+    res.render('signin', {login: req.session.valid, admin: req.session.admin, error: false, signed: false, admin: req.session.admin, login: req.session.valid});
+});
 
 
+
+app.post('/register', function (req, res) {
+    let login = req.body.login.toString();
+    let password = req.body.password.toString();
+    // console.log(login, password)
+
+    // console.log("SELECT * FROM users WHERE username = \'" + login + "\' AND password = \'" + password + "\'");
+    (async function main() {
+        try {
+            var result = await pool.query("SELECT * FROM users WHERE username = \'" + login + "\'");
+
+            if (result.rows.length > 0) {
+                res.render('signin', {login: req.session.valid, admin: req.session.admin, error: true, signed: false});
+            }
+            else {
+                await pool.query(`INSERT INTO users (username, password) VALUES ('${login}', '${password}')`);
+                res.render('signin', {login: req.session.valid, admin: req.session.admin, error: false, signed: true});
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
+    })();
+
+});
 
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);
