@@ -18,18 +18,8 @@ var pg = require('pg');
 
 var multer = require('multer');
 
-// let path = require('path');
-// var session = require('express-session');
-// let logger = require('morgan');
 
-// let indexRouter = require('./views/index.ejs');
-// let indexRouter = require('./routes/index');
-// let usersRouter = require('./routes/users');
-// let loginRouter = require('./routes/login');
-// let registerRouter = require('./routes/register');
-// let productsRouter = require('./routes/products');
-// let cartRouter = require('./routes/cart');
-// let ordersRouter = require('./routes/orders');
+
 
 var app = express();
 var upload = multer();
@@ -41,20 +31,9 @@ app.set('views', './views');
 
 app.use(express.static('./static'));
 
-// app.use(logger('dev'));
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
-// app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use(session({
-//     secret: '654af64asd46w3',
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: { maxAge: 2 * 60 * 60 * 1000 }
-// }))
 
-// app.use(cookieParser('456dasd63adaw56das3'))
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser('sgs90890s8g90as8rg90as8g9r8a0srg8'));
@@ -77,12 +56,6 @@ app.get( '/', (req, res) => {
 
 app.get('/produkty', (req, res) => {
     (async function main() {
-        // var pool = new pg.Pool({
-        //     host: 'localhost',
-        //     database: 'database',
-        //     user: 'postgres',
-        //     password: 'postgres'
-        // });
         try {
             var result = await pool.query('select * from products');
             res.render('products', { login: req.session.valid, admin: req.session.admin, result: result });
@@ -95,20 +68,7 @@ app.get('/produkty', (req, res) => {
 
 
 
-// app.get('/zarejestruj', (req, res) => {
-//     res.render('signin');
-// });
 
-// app.use('/zarejestruj', (req, res) => {
-//     var sessionValue;
-//     if (!req.session.sessionValue) {
-//         sessionValue = new Date().toString();
-//         req.session.sessionValue = sessionValue;
-//     } else {
-//         sessionValue = req.session.sessionValue;
-//     }
-//     res.render('signin', { sessionValue: sessionValue } );
-// });
 
 
 
@@ -131,9 +91,6 @@ app.get('/zakup/:id', authenticate, function (req, res) {
             var id = req.param('id');
             var result = await pool.query("SELECT MAX(orderid) as maxid FROM orders");
 
-            // console.log(result.rows[0].maxid);
-            // var newid = result.rows[0].maxid + 1;
-            // console.log(newid);
             await pool.query(`INSERT INTO orders (status, userid, productid) VALUES ('in cart', ${req.session.userid}, ${id})`);
             res.redirect('/koszyk');
         }
@@ -248,13 +205,7 @@ app.post('/register', function (req, res) {
 
 });
 
-// app.use('/', indexRouter);
-// app.use('/users', usersRouter);
-// app.use('/login', loginRouter);
-// app.use('/register', registerRouter);
-// app.use('/product', productsRouter);
-// app.use('/cart', cartRouter);
-// app.use('/orders', ordersRouter);
+
 
 app.get('/logout', (req, res) => {
     req.session.destroy()
@@ -262,17 +213,13 @@ app.get('/logout', (req, res) => {
 });
 
 
-// app.use(express.static("./static"));
 
-// app.use('/', indexRouter);
 
 app.use((req, res, next) => {
     res.status(404).render('404', { url : req.url});
 });
 
-// app.use((req,res,next) => {
-//     res.render('404.ejs', { url : req.url });
-// });
+
 
 http.createServer(app).listen(3000);
 // http.createServer(app).listen(process.env.PORT || 3000);

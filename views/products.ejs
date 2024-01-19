@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produkty - Nazwa Sklepu</title>
     <link rel="stylesheet" href="/style.css">
-    <!-- Dodaj dodatkowe pliki CSS, skrypty JavaScript, itp. w razie potrzeby -->
     <style>
         .opis-produktu {
           display: none; /* Ukryj opis początkowo */
@@ -65,7 +64,6 @@
                     <!-- <img src='/images/${r.name}.jpg' alt="Produkt 1"> -->
                     <h3> <%= r.name %> </h3>
                     <p>Cena: <%= r.price %></p>
-                    <!-- <a href='/produkty/${r.id}'>Szczegóły</a> -->
 
                     <!-- <%= // console.log(r.id.toString()) %> -->
                     <p class="pokaz-opis" onclick="pokazOpis('<%= r.id %>')">Opis produktu</p>
@@ -79,26 +77,6 @@
                 </div>
             <% }); %>
         
-
-
-
-
-
-
-        <!-- <div class="product">
-            <img src="/images/product1.jpg" alt="Produkt 1">
-            <h3>Nazwa Produktu 1</h3>
-            <p>Cena: $19.99</p>
-            <a href="/produkt/1">Szczegóły</a>
-            <button onclick="addToCart(1)">Dodaj do koszyka</button>
-        </div>
-        <div class="product">
-            <img src="/images/product2.jpg" alt="Produkt 2">
-            <h3>Nazwa Produktu 2</h3>
-            <p>Cena: $29.99</p>
-            <a href="/produkt/2">Szczegóły</a>
-            <button onclick="addToCart(2)">Dodaj do koszyka</button>
-        </div> -->
     </section>
 </main>
 
