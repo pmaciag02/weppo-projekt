@@ -22,7 +22,7 @@ app.use(session({resave:true, saveUninitialized: true, secret: 'qewhiugriasgy'})
 const port = 3000;
 
 // Routes
-app.get( '/', (req, res) => {
+app.get('/', (req, res) => {
     res.render('index', {login: req.session.valid, admin: req.session.admin});
 });
 
@@ -48,31 +48,39 @@ function authenticate(req, res, next) {
 }
 
 app.get('/zakup/:id', authenticate, function (req, res) {
-    (async function main() {
-        try {
-            var id = req.param('id');
+    if (req.session.admin) {
+        res.redirect('/')
+    } else {
+        (async function main() {
+            try {
+                var id = req.param('id');
 
-            await pool.query(`INSERT INTO orders (status, userid, productid) VALUES ('in cart', ${req.session.userid}, ${id})`);
-            res.redirect('/koszyk');
-        }
-        catch (err) {
-            console.log(err);
-        }
-    })();
+                await pool.query(`INSERT INTO orders (status, userid, productid) VALUES ('in cart', ${req.session.userid}, ${id})`);
+                res.redirect('/koszyk');
+            }
+            catch (err) {
+                console.log(err);
+            }
+        })();
+    }
 });
 
 app.get('/koszyk', authenticate, (req, res) => {
-    (async function main() {
-        try {
-            var result = await pool.query(`select * from orders join products on userid = '${req.session.userid}'
-                                                    and orders.productid = products.id
-                                                    and orders.status = 'in cart'`);
-            res.render('cart', { login: req.session.valid, admin: req.session.admin, result: result });
-        }
-        catch (err) {
-            console.log(err);
-        }
-    })();
+    if (req.session.admin) {
+        res.redirect('/');
+    } else {
+        (async function main() {
+            try {
+                var result = await pool.query(`select * from orders join products on userid = '${req.session.userid}'
+                                                        and orders.productid = products.id
+                                                        and orders.status = 'in cart'`);
+                res.render('cart', { login: req.session.valid, admin: req.session.admin, result: result });
+            }
+            catch (err) {
+                console.log(err);
+            }
+        })();
+    }
 });
 
 app.get('/koszyk-usun/:id', authenticate, function (req, res) {

@@ -50,7 +50,9 @@
                         <p><%= r.description %></p>
                       </div>
 
-                    <button onclick=<%= `window.location.href='/zakup/${r.id}'` %>>Dodaj do koszyka</button>
+                    <% if (login && !admin) { %>
+                      <button onclick=<%= `window.location.href='/zakup/${r.id}'` %>>Dodaj do koszyka</button>
+                    <% } %>
                 </div>
             <% }); %>
 
