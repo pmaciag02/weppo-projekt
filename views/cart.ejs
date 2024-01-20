@@ -15,6 +15,7 @@
 </header>
 
 <main>
+    <% if(!done) { %>
     <section class="shopping-cart">
         <h2>Koszyk</h2>
 
@@ -26,7 +27,15 @@
                 <button onclick=<%= `window.location.href='/koszyk-usun/${r.orderid}'` %>>Usuń z koszyka</button>
             </div>
         <% }); %>
-    </section>
+        <% if(result.rows.length > 0) { %>
+            <button onclick=<%= `window.location.href='/koszyk-zamow'` %> %>>Kupuję</button>
+        <% } %>
+        </section>
+    <% } else { %>
+        <h2>Zamówienie zostało złożone.</h2>
+        <h3>Całkowita cena: <%= price %></h3>
+    <% } %>
+
 </main>
 
 <footer>
