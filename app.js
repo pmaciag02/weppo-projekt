@@ -5,7 +5,6 @@ const authorize      = require('./src/authorize');
 const pool           = require('./src/db')
 const login          = require('./src/login');
 const register       = require('./src/register');
-const manageProducts = require('./src/manageProducts');
 const authenticate   = require('./src/authenticate')
 
 // Express setup
@@ -119,7 +118,17 @@ app.get('/manage-products', authenticate('admin'), (req, res) => {
     })();
 });
 
-app.post('/manage-products', authenticate('admin'), manageProducts);
+app.get('/manage-users', authenticate('admin'), (req, res) => {
+    (async function main() {
+        try {
+            var result = await pool.query('select * from users');
+            res.render('manage-users', { login: req.session.valid, admin: req.session.admin, result: result });
+        }
+        catch (err) {
+            console.log(err);
+        }
+    })();
+});
 
 app.use((req, res, next) => {
     res.status(404).render('404', { url : req.url});

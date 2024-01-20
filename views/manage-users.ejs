@@ -1,0 +1,40 @@
+<!-- products.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zarządzanie użytkownikami - Nazwa Sklepu</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header>
+    <%- include('header', locals) %>
+</header>
+
+<main>
+    <section class="user-list">
+        <h2>Użytkownicy</h2>
+                <button onclick=<%= `window.location.href='/dodaj-uzytkownik'` %>>Dodaj nowy użytkownik</button>
+
+            <% result.rows.forEach(r => { %>
+                <div class="user">
+                    <p><b>Login:</b> <%= r.username %></p>
+                    <p><b>Hasło:</b> <%= r.password %></p>
+
+                    <button onclick=<%= `window.location.href='/edytuj-uzytkownik/${r.id}'` %>>Edytuj</button>
+                    <button onclick=<%= `window.location.href='/usun-uzytkownik/${r.id}'` %>>Usuń</button>
+                </div>
+            <% }); %>
+
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2024 Nazwa Sklepu. Wszelkie prawa zastrzeżone.</p>
+</footer>
+
+</body>
+</html>
