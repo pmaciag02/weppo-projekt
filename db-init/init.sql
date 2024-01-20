@@ -5,12 +5,10 @@ CREATE TABLE users (
 );
 
 
-
 INSERT INTO users (username, password) VALUES
     ('login1', 'haslo1'),
     ('login2', 'haslo2'),
     ('login3', 'haslo3');
-
 
 
 CREATE TABLE products (
@@ -25,7 +23,6 @@ INSERT INTO products (name, price, description) VALUES
   ('Produkt 1', 5.99, 'Bardzo fajny produkt.'),
   ('Produkt 2', 420.69, 'Ekstra fajny produkt.'),
   ('Produkt 3', 99.99, 'Super fajny produkt.');
-
 
 
 CREATE TABLE orders (

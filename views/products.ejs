@@ -11,7 +11,7 @@
         .opis-produktu {
           display: none; /* Ukryj opis początkowo */
         }
-    
+
         .pokaz-opis {
           cursor: pointer;
           color: blue;
@@ -21,7 +21,7 @@
       <script>
         function pokazOpis(id) {
           var opisElement = document.getElementById(id);
-    
+
           if (opisElement.style.display === 'none') {
             opisElement.style.display = 'block';
           } else {
@@ -57,26 +57,21 @@
 <main>
     <section class="product-list">
         <h2>Produkty</h2>
-        
+
             <% result.rows.forEach(r => { %>
-                <!-- <% // console.log(`${r.id} ${r.name} ${r.price}`); %> -->
                 <div class="product">
-                    <!-- <img src='/images/${r.name}.jpg' alt="Produkt 1"> -->
                     <h3> <%= r.name %> </h3>
                     <p>Cena: <%= r.price %></p>
 
-                    <!-- <%= // console.log(r.id.toString()) %> -->
                     <p class="pokaz-opis" onclick="pokazOpis('<%= r.id %>')">Opis produktu</p>
                     <div class="opis-produktu" id='<%= r.id %>'>
                         <p><%= r.description %></p>
                       </div>
-                    
 
-                    <!-- <button onclick="addToCart('${r.id}')">Dodaj do koszyka</button> -->
                     <button onclick=<%= `window.location.href='/zakup/${r.id}'` %>>Dodaj do koszyka</button>
                 </div>
             <% }); %>
-        
+
     </section>
 </main>
 
