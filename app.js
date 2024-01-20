@@ -40,6 +40,23 @@ app.get('/produkty', (req, res) => {
     })();
 });
 
+app.get('/szukaj', function (req, res) {
+    res.render('browse', {anyresult:false, admin: req.session.admin, login: req.session.valid});
+});
+
+app.post('/szukaj', function (req, res) {
+    let data = req.body.data.toString();
+    (async function main() {
+        try {
+            var result = await pool.query(`select * from products where name = '${data}' or description = '${data}'`);
+            res.render('browse', {anyresult:true, result:result, admin: req.session.admin, login: req.session.valid});
+        }
+        catch (err) {
+            console.log(err);
+        }
+    })();
+});
+
 app.get('/zakup/:id', authenticate('user'), function (req, res) {
     if (req.session.admin) {
         res.redirect('/')
