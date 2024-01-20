@@ -8,6 +8,7 @@ const register       = require('./src/register');
 const authenticate   = require('./src/authenticate');
 const productManager = require('./src/productManager');
 const userManager    = require('./src/userManager');
+const browser        = require('./src/browser');
 
 // Express setup
 const app = express();
@@ -42,23 +43,11 @@ app.get('/produkty', (req, res) => {
     })();
 });
 
-app.get('/szukaj', function (req, res) {
-    res.render('browse', {anyresult:false, admin: req.session.admin, login: req.session.valid});
-});
+// browser
+app.get('/szukaj', browser.browserDefaultView);
+app.post('/szukaj', browser.showResults);
 
-app.post('/szukaj', function (req, res) {
-    let data = req.body.data.toString();
-    (async function main() {
-        try {
-            var result = await pool.query(`select * from products where name = '${data}' or description = '${data}'`);
-            res.render('browse', {anyresult:true, result:result, admin: req.session.admin, login: req.session.valid});
-        }
-        catch (err) {
-            console.log(err);
-        }
-    })();
-});
-
+// cart
 app.get('/zakup/:id', authenticate('user'), function (req, res) {
     (async function main() {
         try {
