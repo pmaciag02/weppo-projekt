@@ -39,6 +39,7 @@
 <main>
     <section class="product-list">
         <h2>Produkty</h2>
+                <button onclick=<%= `window.location.href='/dodaj-produkt'` %>>Dodaj nowy produkt</button>
 
             <% result.rows.forEach(r => { %>
                 <div class="product">
@@ -48,11 +49,10 @@
                     <p class="pokaz-opis" onclick="pokazOpis('<%= r.id %>')">Opis produktu</p>
                     <div class="opis-produktu" id='<%= r.id %>'>
                         <p><%= r.description %></p>
-                      </div>
+                    </div>
 
-                    <% if (login && !admin) { %>
-                      <button onclick=<%= `window.location.href='/zakup/${r.id}'` %>>Dodaj do koszyka</button>
-                    <% } %>
+                    <button onclick=<%= `window.location.href='/edytuj-produkt/${r.id}'` %>>Edytuj</button>
+                    <button onclick=<%= `window.location.href='/usun-produkt/${r.id}'` %>>Usuń</button>
                 </div>
             <% }); %>
 
