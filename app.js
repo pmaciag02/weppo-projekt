@@ -144,6 +144,22 @@ app.post('/edytuj-uzytkownik/:id', authenticate('admin'), userManager.editUser);
 
 app.get('/usun-uzytkownik/:id', authenticate('admin'), userManager.deleteUser);
 
+app.get('/show-orders', authenticate('admin'), (req, res) => {
+    (async function main() {
+        try {
+            var userids = await pool.query('select id from users');
+            var result = [];
+            for(let i = 0; i < userids.rows.length; i++) {
+                var orders = await pool.query(`select * from orders join products on orders.productid = products.id where userid = ${userids.rows[i].id}`);
+                result.push(orders);
+            }
+            res.render('orders', { login: req.session.valid, admin: req.session.admin, result: result });
+        }
+        catch (err) {
+            console.log(err);
+        }
+    })();
+});
 // unsupported route
 app.use((req, res, next) => {
     res.status(404).render('404', { url : req.url});
