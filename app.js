@@ -1,8 +1,9 @@
 const express      = require('express');
 const cookieParser = require('cookie-parser');
 const session      = require('express-session');
-const authorize    = require('./authorize');
-const pg           = require('pg');
+const authorize    = require('./src/authorize');
+const pool         = require('./src/db')
+const login        = require('./src/login')
 
 // Express setup
 const app = express();
@@ -19,15 +20,6 @@ app.disable('etag');
 app.use(session({resave:true, saveUninitialized: true, secret: 'qewhiugriasgy'}));
 
 const port = 3000;
-
-// DB setup
-const pool = new pg.Pool({
-    host: 'db',
-    port: 5432,
-    user: 'user123',
-    password: 'password123',
-    database: 'db123'
-});
 
 // Routes
 app.get( '/', (req, res) => {
@@ -72,7 +64,9 @@ app.get('/zakup/:id', authenticate, function (req, res) {
 app.get('/koszyk', authenticate, (req, res) => {
     (async function main() {
         try {
-            var result = await pool.query(`select * from orders join products on userid = '${req.session.userid}' and orders.productid = products.id and orders.status = 'in cart'`);
+            var result = await pool.query(`select * from orders join products on userid = '${req.session.userid}'
+                                                    and orders.productid = products.id
+                                                    and orders.status = 'in cart'`);
             res.render('cart', { login: req.session.valid, admin: req.session.admin, result: result });
         }
         catch (err) {
@@ -98,41 +92,7 @@ app.get('/login', function (req, res) {
     res.render('login', {error: false, admin: req.session.admin, login: req.session.valid});
 });
 
-app.post('/login', function (req, res) {
-    let login = req.body.login.toString();
-    let password = req.body.password.toString();
-    // console.log(login, password)
-    (async function main() {
-        try {
-            var result = await pool.query("SELECT * FROM users WHERE username = \'" + login + "\' AND password = \'" + password + "\'");
-
-            if (result.rows.length > 0) {
-                console.log(`${result.rows[0].id} ${result.rows[0].username} ${result.rows[0].password}`);
-                // let hashedPassword = result.dataValues.password;
-                // bcrypt.compare(password, hashedPassword, function (err, x) {
-                    // if (x) {
-                        req.session.user = login;
-                        req.session.userid = result.rows[0].id;
-                        // req.session.admin = result.body.admin;
-                        req.session.valid = true;
-                        req.session.cart = {};
-                        req.session.price = 0;
-                        res.redirect('/');
-                    // }
-                    // else {
-                        // res.render('login', {error: true, admin: req.session.admin, login: req.session.valid})
-                    // }
-                // });
-            }
-            else {
-                res.render('login', {error: true});
-            }
-        }
-        catch (err) {
-            console.log(err);
-        }
-    })();
-});
+app.post('/login', login);
 
 app.get('/register', function (req, res) {
     res.render('signin', {login: req.session.valid, admin: req.session.admin, error: false, signed: false, admin: req.session.admin, login: req.session.valid});
