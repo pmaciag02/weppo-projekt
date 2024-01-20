@@ -31,6 +31,7 @@ main {
 
 .product-list, .shopping-cart {
     margin-bottom: 20px;
+    padding-bottom: 60px;
 }
 
 .product, .cart-item {

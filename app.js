@@ -43,11 +43,14 @@ app.use(session({resave:true, saveUninitialized: true, secret: 'qewhiugriasgy'})
 
 
 var pool = new pg.Pool({
-    host: 'localhost',
-    database: 'database',
-    user: 'postgres',
-    password: 'postgres'
+    host: 'db',
+    port: 5432,
+    user: 'user123',
+    password: 'password123',
+    database: 'db123'
 });
+
+const port = 3000;
 
 
 app.get( '/', (req, res) => {
@@ -221,5 +224,5 @@ app.use((req, res, next) => {
 
 
 
-http.createServer(app).listen(3000);
+app.listen(port, () => console.log(`Server started on port ${port}`));
 // http.createServer(app).listen(process.env.PORT || 3000);

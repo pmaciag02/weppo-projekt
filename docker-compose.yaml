@@ -1,16 +1,16 @@
-version: "3.8"
+version: "3"
 services:
   db:
-    image: postgres:16
+    image: postgres
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: database
-    ports:
-      - 5432:5432
+      POSTGRES_PASSWORD: password123
+      POSTGRES_USER: user123
+      POSTGRES_DB: db123
     volumes:
       - ./db-init:/docker-entrypoint-initdb.d
   app:
     image: node-app
     ports:
       - 3000:3000
+    volumes:
+      - ./:/usr/src/app
