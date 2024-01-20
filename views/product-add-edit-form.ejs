@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title><%= title %> - Nazwa Sklepu</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        html,
+        body,
+        form {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #product {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid black;
+        }
+
+        #product div {
+            padding: 3px;
+            overflow: auto;
+        }
+
+        #product input {
+            float: right;
+        }
+
+        button {
+            clear: both;
+        }
+
+        .message {
+            color: red;
+        }
+    </style>
+</head>
+
+
+<body>
+    <header>
+        <%- include('header', locals) %>
+    </header>
+
+    <form method="POST">
+        <div id="product">
+            <div>
+                <h3><%= title %></h3>
+            </div>
+            <div>
+                <b>Nazwa:</b>
+                <input type='text' value='<%= result.name %>' name='name'/>
+            </div>
+            <div>
+                <b>Cena:</b>
+                <input type='number' min="0" step="any" value='<%= result.price %>' name='price'/>
+            </div>
+            <div>
+                <b>Opis:</b>
+                <input type='text' value='<%= result.description %>' name='description'/>
+            </div>
+            <div>
+                <button>Zapisz</button>
+                <button name="cancel" value="1">Anuluj</button>
+            </div>
+            <% if(error) { %>
+                <div class='message'>
+                    <strong>Nieprawidłowe dane!</strong>
+                </div>
+            <% } %>
+        </div>
+    </form>
+</body>
+
+</html>

@@ -25,24 +25,24 @@ function login(req, res) {
         else {
             res.render('login', {error: true, admin: req.session.admin, login: req.session.valid});
         }
+    } else {
+        (async function main() {
+            try {
+                const result = await pool.query(`SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`);
+
+                if (result.rows.length > 0) {
+                    setUpLoggedSession(req.session, username, result.rows[0].id);
+                    res.redirect('/');
+                }
+                else {
+                    res.render('login', {error: true, admin: req.session.admin, login: req.session.valid});
+                }
+            }
+            catch (err) {
+                console.log(err);
+            }
+        })();
     }
-
-    (async function main() {
-        try {
-            const result = await pool.query(`SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`);
-
-            if (result.rows.length > 0) {
-                setUpLoggedSession(req.session, username, result.rows[0].id);
-                res.redirect('/');
-            }
-            else {
-                res.render('login', {error: true, admin: req.session.admin, login: req.session.valid});
-            }
-        }
-        catch (err) {
-            console.log(err);
-        }
-    })();
 }
 
 module.exports = login;

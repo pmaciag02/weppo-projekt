@@ -5,7 +5,8 @@ const authorize      = require('./src/authorize');
 const pool           = require('./src/db')
 const login          = require('./src/login');
 const register       = require('./src/register');
-const authenticate   = require('./src/authenticate')
+const authenticate   = require('./src/authenticate');
+const productManager = require('./src/productManager');
 
 // Express setup
 const app = express();
@@ -116,6 +117,7 @@ app.get('/koszyk-usun/:id', authenticate('user'), function (req, res) {
     })();
 });
 
+// login
 app.get('/login', function (req, res) {
     res.render('login', {error: false, admin: req.session.admin, login: req.session.valid});
 });
@@ -133,18 +135,19 @@ app.get('/logout', (req, res) => {
     res.redirect('/')
 });
 
-app.get('/manage-products', authenticate('admin'), (req, res) => {
-    (async function main() {
-        try {
-            var result = await pool.query('select * from products');
-            res.render('manage-products', { login: req.session.valid, admin: req.session.admin, result: result });
-        }
-        catch (err) {
-            console.log(err);
-        }
-    })();
-});
+// admin functions
+// manage products
+app.get('/manage-products', authenticate('admin'), productManager.viewProducts);
 
+app.get('/dodaj-produkt', authenticate('admin'), productManager.viewAddProduct);
+app.post('/dodaj-produkt', authenticate('admin'), productManager.addProduct);
+
+app.get('/edytuj-produkt/:id', authenticate('admin'), productManager.viewEditProduct);
+app.post('/edytuj-produkt/:id', authenticate('admin'), productManager.editProduct);
+
+app.get('/usun-produkt/:id', authenticate('admin'), productManager.deleteProduct);
+
+// manage users
 app.get('/manage-users', authenticate('admin'), (req, res) => {
     (async function main() {
         try {

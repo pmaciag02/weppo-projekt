@@ -31,6 +31,6 @@ CREATE TABLE orders (
     status VARCHAR(10) NOT NULL,
     userid INT NOT NULL,
     productid INT NOT NULL,
-    FOREIGN KEY (userid) REFERENCES users(id),
-    FOREIGN KEY (productid) REFERENCES products(id)
+    FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (productid) REFERENCES products(id) ON DELETE CASCADE
 );
