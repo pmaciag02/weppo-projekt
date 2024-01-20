@@ -1,9 +1,5 @@
-const pool = require('./db')
-
-// admin
-const adminUsername = 'admin';
-const adminPassword = 'admin';
-const adminUserId = 0;
+const pool = require('./db');
+const admin = require('./admin');
 
 function setUpLoggedSession(session, username, userId, isAdmin=false) {
     session.username = username;
@@ -17,9 +13,9 @@ function login(req, res) {
     const password = req.body.password.toString();
 
     // check if user is admin
-    if (username == adminUsername) {
-        if (password == adminPassword) {
-            setUpLoggedSession(req.session, username, adminUserId, true);
+    if (username == admin.username) {
+        if (password == admin.password) {
+            setUpLoggedSession(req.session, username, admin.userId, true);
             res.redirect('/');
         }
         else {

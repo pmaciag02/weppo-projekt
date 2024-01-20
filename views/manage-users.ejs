@@ -24,8 +24,10 @@
                     <p><b>Login:</b> <%= r.username %></p>
                     <p><b>Hasło:</b> <%= r.password %></p>
 
-                    <button onclick=<%= `window.location.href='/edytuj-uzytkownik/${r.id}'` %>>Edytuj</button>
-                    <button onclick=<%= `window.location.href='/usun-uzytkownik/${r.id}'` %>>Usuń</button>
+                    <% if (r.id != adminUserId) { %>
+                        <button onclick=<%= `window.location.href='/edytuj-uzytkownik/${r.id}'` %>>Edytuj</button>
+                        <button onclick=<%= `window.location.href='/usun-uzytkownik/${r.id}'` %>>Usuń</button>
+                    <% } %>
                 </div>
             <% }); %>
 

@@ -1,10 +1,11 @@
 const pool = require('./db');
+const admin = require('./admin');
 
 function viewUsers(req, res) {
     (async function () {
         try {
             const result = await pool.query('select * from users');
-            res.render('manage-users', {login: req.session.valid, admin: req.session.admin, result: result });
+            res.render('manage-users', {login: req.session.valid, admin: req.session.admin, result: result, adminUserId: admin.userId});
         }
         catch (err) {
             console.log(err);
@@ -52,6 +53,11 @@ function viewEditUser(req, res) {
     (async function () {
         try {
             const id = req.params.id;
+            if (id == admin.userId) {
+                res.redirect('/manage-users');
+                return;
+            }
+
             result = await pool.query(`SELECT * FROM users WHERE id=${id}`);
             res.render('edit-user', {
                 error: false, loginAlreadyExists: false, login: req.session.valid, admin: req.session.admin, result: result.rows[0]
@@ -79,6 +85,11 @@ function editUser(req, res) {
         (async function () {
             try {
                 const id = req.params.id;
+                if (id == admin.userId) {
+                    res.redirect('/manage-users');
+                    return;
+                }
+
                 const result = await pool.query(`SELECT id FROM users WHERE id<>${id} AND username='${username}'`);
                 if (result.rows.length > 0) {
                     res.render('edit-user', {
@@ -99,6 +110,11 @@ function deleteUser(req, res) {
     (async function () {
         try {
             const id = req.params.id;
+            if (id == admin.userId) {
+                res.redirect('/manage-users');
+                return;
+            }
+
             await pool.query(`DELETE FROM users where id = ${id}`);
             res.redirect('/manage-users');
         }
