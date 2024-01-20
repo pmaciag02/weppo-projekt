@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title><%= title %> - Nazwa Sklepu</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        html,
+        body,
+        form {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #user {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid black;
+        }
+
+        #user div {
+            padding: 3px;
+            overflow: auto;
+        }
+
+        #user input {
+            float: right;
+        }
+
+        button {
+            clear: both;
+        }
+
+        .message {
+            color: red;
+        }
+    </style>
+</head>
+
+
+<body>
+    <header>
+        <%- include('header', locals) %>
+    </header>
+
+    <form method="POST">
+        <div id="user">
+            <div>
+                <h3><%= title %></h3>
+            </div>
+            <div>
+                <b>Nazwa:</b>
+                <input type='text' value='<%= result.username %>' name='username'/>
+            </div>
+            <div>
+                <b>Hasło:</b>
+                <input type='text' value='<%= result.password %>' name='password'/>
+            </div>
+            <div>
+                <button>Zapisz</button>
+                <button name="cancel" value="1">Anuluj</button>
+            </div>
+            <% if(error) { %>
+                <div class='message'>
+                    <strong>Nieprawidłowe dane!</strong>
+                </div>
+            <% } %>
+            <% if(loginAlreadyExists) { %>
+                <div class='message'>
+                    <strong>Login zajęty!</strong>
+                </div>
+            <% } %>
+        </div>
+    </form>
+</body>
+
+</html>

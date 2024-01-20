@@ -6,6 +6,8 @@
 
 Klasyczna witryna w node.js + Express, która realizuje funkcjonalność sklepu intenetowego. Aplikacja składa się z wielu widoków dla użytkowników, dane przechowywane są w relacyjnej bazie danych PostreSQL.
 
+## Uruchomienie aplikacji
+`./run-docker.sh`
 
 ## Wymagania funkcjonalne:
 - Użytkownik anonimowy (bez logowania)

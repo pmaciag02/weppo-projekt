@@ -7,6 +7,7 @@ const login          = require('./src/login');
 const register       = require('./src/register');
 const authenticate   = require('./src/authenticate');
 const productManager = require('./src/productManager');
+const userManager    = require('./src/userManager');
 
 // Express setup
 const app = express();
@@ -148,18 +149,17 @@ app.post('/edytuj-produkt/:id', authenticate('admin'), productManager.editProduc
 app.get('/usun-produkt/:id', authenticate('admin'), productManager.deleteProduct);
 
 // manage users
-app.get('/manage-users', authenticate('admin'), (req, res) => {
-    (async function main() {
-        try {
-            var result = await pool.query('select * from users');
-            res.render('manage-users', { login: req.session.valid, admin: req.session.admin, result: result });
-        }
-        catch (err) {
-            console.log(err);
-        }
-    })();
-});
+app.get('/manage-users', authenticate('admin'), userManager.viewUsers);
 
+app.get('/dodaj-uzytkownik', authenticate('admin'), userManager.viewAddUser);
+app.post('/dodaj-uzytkownik', authenticate('admin'), userManager.addUser);
+
+app.get('/edytuj-uzytkownik/:id', authenticate('admin'), userManager.viewEditUser);
+app.post('/edytuj-uzytkownik/:id', authenticate('admin'), userManager.editUser);
+
+app.get('/usun-uzytkownik/:id', authenticate('admin'), userManager.deleteUser);
+
+// unsupported route
 app.use((req, res, next) => {
     res.status(404).render('404', { url : req.url});
 });

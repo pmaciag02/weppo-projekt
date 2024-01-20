@@ -19,6 +19,7 @@ function viewAddProduct(req, res) {
 function addProduct(req, res) {
     if (req.body.cancel) {
         res.redirect('/manage-products');
+        return;
     }
 
     const name = req.body.name;
@@ -42,7 +43,7 @@ function addProduct(req, res) {
 function viewEditProduct(req, res) {
     (async function () {
         try {
-            const id = req.param('id')
+            const id = req.params.id;
             result = await pool.query(`SELECT * FROM products WHERE id=${id}`);
             res.render('edit-product', {error: false, login: req.session.valid, admin: req.session.admin, result: result.rows[0]});
         } catch (err) {
@@ -54,6 +55,7 @@ function viewEditProduct(req, res) {
 function editProduct(req, res) {
     if (req.body.cancel) {
         res.redirect('/manage-products');
+        return;
     }
 
     const name = req.body.name;
@@ -65,7 +67,7 @@ function editProduct(req, res) {
     } else {
         (async function () {
             try {
-                const id = req.param('id')
+                const id = req.params.id;
                 result = await pool.query(`UPDATE products SET name='${name}', price=${price}, description='${description}' WHERE id=${id}`);
                 res.redirect('/manage-products');
             } catch (err) {
@@ -78,7 +80,7 @@ function editProduct(req, res) {
 function deleteProduct(req, res) {
     (async function () {
         try {
-            const id = req.param('id');
+            const id = req.params.id;
             await pool.query(`DELETE FROM products where id = ${id}`);
             res.redirect('/manage-products');
         }
