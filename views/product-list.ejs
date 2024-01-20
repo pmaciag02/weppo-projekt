@@ -1,0 +1,15 @@
+<% result.rows.forEach(r => { %>
+  <div class="product">
+      <h3> <%= r.name %> </h3>
+      <p>Cena: <%= r.price %></p>
+
+      <p class="pokaz-opis" onclick="pokazOpis('<%= r.id %>')">Opis produktu</p>
+      <div class="opis-produktu" id='<%= r.id %>'>
+          <p><%= r.description %></p>
+        </div>
+
+      <% if (login) { %>
+        <button onclick=<%= `window.location.href='/zakup/${r.id}'` %>>Dodaj do koszyka</button>
+      <% } %>
+  </div>
+<% }); %>

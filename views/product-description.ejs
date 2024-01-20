@@ -1,0 +1,22 @@
+<style>
+    .opis-produktu {
+      display: none; /* Ukryj opis początkowo */
+    }
+
+    .pokaz-opis {
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+    }
+  </style>
+  <script>
+    function pokazOpis(id) {
+      var opisElement = document.getElementById(id);
+
+      if (opisElement.style.display === 'none') {
+        opisElement.style.display = 'block';
+      } else {
+        opisElement.style.display = 'none';
+      }
+    }
+  </script>

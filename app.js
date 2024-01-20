@@ -58,39 +58,31 @@ app.post('/szukaj', function (req, res) {
 });
 
 app.get('/zakup/:id', authenticate('user'), function (req, res) {
-    if (req.session.admin) {
-        res.redirect('/')
-    } else {
-        (async function main() {
-            try {
-                var id = req.param('id');
+    (async function main() {
+        try {
+            var id = req.param('id');
 
-                await pool.query(`INSERT INTO orders (status, userid, productid) VALUES ('in cart', ${req.session.userid}, ${id})`);
-                res.redirect('/koszyk');
-            }
-            catch (err) {
-                console.log(err);
-            }
-        })();
-    }
+            await pool.query(`INSERT INTO orders (status, userid, productid) VALUES ('in cart', ${req.session.userid}, ${id})`);
+            res.redirect('/koszyk');
+        }
+        catch (err) {
+            console.log(err);
+        }
+    })();
 });
 
 app.get('/koszyk', authenticate('user'), (req, res) => {
-    if (req.session.admin) {
-        res.redirect('/');
-    } else {
-        (async function main() {
-            try {
-                var result = await pool.query(`select * from orders join products on userid = '${req.session.userid}'
-                                                        and orders.productid = products.id
-                                                        and orders.status = 'in cart'`);
-                res.render('cart', { login: req.session.valid, admin: req.session.admin, result: result });
-            }
-            catch (err) {
-                console.log(err);
-            }
-        })();
-    }
+    (async function main() {
+        try {
+            var result = await pool.query(`select * from orders join products on userid = '${req.session.userid}'
+                                                    and orders.productid = products.id
+                                                    and orders.status = 'in cart'`);
+            res.render('cart', { login: req.session.valid, admin: req.session.admin, result: result });
+        }
+        catch (err) {
+            console.log(err);
+        }
+    })();
 });
 
 app.get('/koszyk-usun/:id', authenticate('user'), function (req, res) {

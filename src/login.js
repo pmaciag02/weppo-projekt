@@ -3,7 +3,7 @@ const pool = require('./db')
 // admin
 const adminUsername = 'admin';
 const adminPassword = 'admin';
-const adminUserId = -1;
+const adminUserId = 0;
 
 function setUpLoggedSession(session, username, userId, isAdmin=false) {
     session.username = username;

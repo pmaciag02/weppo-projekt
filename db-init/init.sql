@@ -4,6 +4,7 @@ CREATE TABLE users (
     password VARCHAR(20) NOT NULL
 );
 
+INSERT INTO users VALUES (0, 'admin', 'hasloadmina');
 
 INSERT INTO users (username, password) VALUES
     ('login1', 'haslo1'),

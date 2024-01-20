@@ -7,28 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produkty - Nazwa Sklepu</title>
     <link rel="stylesheet" href="/style.css">
-    <style>
-        .opis-produktu {
-          display: none; /* Ukryj opis początkowo */
-        }
-
-        .pokaz-opis {
-          cursor: pointer;
-          color: blue;
-          text-decoration: underline;
-        }
-      </style>
-      <script>
-        function pokazOpis(id) {
-          var opisElement = document.getElementById(id);
-
-          if (opisElement.style.display === 'none') {
-            opisElement.style.display = 'block';
-          } else {
-            opisElement.style.display = 'none';
-          }
-        }
-      </script>
+    <%- include('product-description', locals) %>
 </head>
 <body>
 
@@ -39,23 +18,7 @@
 <main>
     <section class="product-list">
         <h2>Produkty</h2>
-
-            <% result.rows.forEach(r => { %>
-                <div class="product">
-                    <h3> <%= r.name %> </h3>
-                    <p>Cena: <%= r.price %></p>
-
-                    <p class="pokaz-opis" onclick="pokazOpis('<%= r.id %>')">Opis produktu</p>
-                    <div class="opis-produktu" id='<%= r.id %>'>
-                        <p><%= r.description %></p>
-                      </div>
-
-                    <% if (login && !admin) { %>
-                      <button onclick=<%= `window.location.href='/zakup/${r.id}'` %>>Dodaj do koszyka</button>
-                    <% } %>
-                </div>
-            <% }); %>
-
+            <%- include('product-list', locals) %>
     </section>
 </main>
 
