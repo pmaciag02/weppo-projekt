@@ -63,21 +63,17 @@ app.get('/zakup/:id', authenticate('user'), function (req, res) {
 });
 
 app.get('/koszyk', authenticate('user'), (req, res) => {
-    if (req.session.admin) {
-        res.redirect('/');
-    } else {
-        (async function main() {
-            try {
-                var result = await pool.query(`select * from orders join products on userid = '${req.session.userid}'
-                                                        and orders.productid = products.id
-                                                        and orders.status = 'in cart'`);
-                res.render('cart', { login: req.session.valid, admin: req.session.admin, result: result, done: false });
-            }
-            catch (err) {
-                console.log(err);
-            }
-        })();
-    }
+    (async function main() {
+        try {
+            var result = await pool.query(`select * from orders join products on userid = '${req.session.userid}'
+                                                    and orders.productid = products.id
+                                                    and orders.status = 'in cart'`);
+            res.render('cart', { login: req.session.valid, admin: req.session.admin, result: result, done: false });
+        }
+        catch (err) {
+            console.log(err);
+        }
+    })();
 });
 
 app.get('/koszyk-zamow', function (req, res) {

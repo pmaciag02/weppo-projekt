@@ -8,7 +8,7 @@ function showResults(req, res) {
     const data = req.body.data.toString();
     (async function main() {
         try {
-            const result = await pool.query(`select * from products where name like '%${data}%' or description like '%${data}%'`);
+            const result = await pool.query(`select * from products where name ilike '%${data}%' or description ilike '%${data}%'`);
             res.render('browse', {anyresult: true, result: result, admin: req.session.admin, login: req.session.valid, data: data});
         }
         catch (err) {
