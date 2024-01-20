@@ -1,9 +1,12 @@
-const express      = require('express');
-const cookieParser = require('cookie-parser');
-const session      = require('express-session');
-const authorize    = require('./src/authorize');
-const pool         = require('./src/db')
-const login        = require('./src/login')
+const express        = require('express');
+const cookieParser   = require('cookie-parser');
+const session        = require('express-session');
+const authorize      = require('./src/authorize');
+const pool           = require('./src/db')
+const login          = require('./src/login');
+const register       = require('./src/register');
+const manageProducts = require('./src/manageProducts');
+const authenticate   = require('./src/authenticate')
 
 // Express setup
 const app = express();
@@ -38,16 +41,7 @@ app.get('/produkty', (req, res) => {
     })();
 });
 
-function authenticate(req, res, next) {
-    if (req.session.valid) {
-        next();
-    }
-    else {
-        res.send('Funkcja dostępna tylko dla zalogowanych');
-    }
-}
-
-app.get('/zakup/:id', authenticate, function (req, res) {
+app.get('/zakup/:id', authenticate('user'), function (req, res) {
     if (req.session.admin) {
         res.redirect('/')
     } else {
@@ -65,7 +59,7 @@ app.get('/zakup/:id', authenticate, function (req, res) {
     }
 });
 
-app.get('/koszyk', authenticate, (req, res) => {
+app.get('/koszyk', authenticate('user'), (req, res) => {
     if (req.session.admin) {
         res.redirect('/');
     } else {
@@ -83,7 +77,7 @@ app.get('/koszyk', authenticate, (req, res) => {
     }
 });
 
-app.get('/koszyk-usun/:id', authenticate, function (req, res) {
+app.get('/koszyk-usun/:id', authenticate('user'), function (req, res) {
     (async function main() {
         try {
             var id = req.param('id');
@@ -106,22 +100,18 @@ app.get('/register', function (req, res) {
     res.render('signin', {login: req.session.valid, admin: req.session.admin, error: false, signed: false, admin: req.session.admin, login: req.session.valid});
 });
 
-app.post('/register', function (req, res) {
-    let login = req.body.login.toString();
-    let password = req.body.password.toString();
-    // console.log(login, password)
+app.post('/register', register);
 
+app.get('/logout', (req, res) => {
+    req.session.destroy()
+    res.redirect('/')
+});
+
+app.get('/manage-products', authenticate('admin'), (req, res) => {
     (async function main() {
         try {
-            var result = await pool.query("SELECT * FROM users WHERE username = \'" + login + "\'");
-
-            if (result.rows.length > 0) {
-                res.render('signin', {login: req.session.valid, admin: req.session.admin, error: true, signed: false});
-            }
-            else {
-                await pool.query(`INSERT INTO users (username, password) VALUES ('${login}', '${password}')`);
-                res.render('signin', {login: req.session.valid, admin: req.session.admin, error: false, signed: true});
-            }
+            var result = await pool.query('select * from products');
+            res.render('manage-products', { login: req.session.valid, admin: req.session.admin, result: result });
         }
         catch (err) {
             console.log(err);
@@ -129,10 +119,7 @@ app.post('/register', function (req, res) {
     })();
 });
 
-app.get('/logout', (req, res) => {
-    req.session.destroy()
-    res.redirect('/')
-});
+app.post('/manage-products', authenticate('admin'), manageProducts);
 
 app.use((req, res, next) => {
     res.status(404).render('404', { url : req.url});
