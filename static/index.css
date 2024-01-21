@@ -1,0 +1,191 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+main {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #ffffff;
+}
+
+
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+
+
+
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+.container h2 {
+    text-align: center;
+}
+  
+  .main .container .infos {
+    margin-top: 120px;
+  }
+  
+  .main .container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  
+  .main .container .infos p {
+    margin-top: -5px;
+    font-size: 22px;
+  }
+  
+  
+  
+  .main container .infos .title {
+    margin-bottom: 0px;
+    font-size: 74px;
+  }
+  
+  
+  .widget {
+    position: relative;
+    max-width: 650px;
+    width: 95%;
+    margin: 0 auto;
+    border-radius: 50px;
+    display: flex;
+    border: 1px solid #dee2e6;
+    padding: 20px 0;
+    margin-top: -50px;
+    background: #fff;
+    box-shadow: 0 0 30px rgba(173, 181, 189, 0.4);
+  }
+  
+  
+  .widget-item {
+    max-width: 600px;
+    margin: auto;
+    flex-grow: 1;
+    text-align: center;
+    background-color:rgb(255, 255, 255);
+  }
+  
+
+  
+  
+  .widget-item h2 {
+    margin: 0;
+  }
+
+  .widget-item h3 {
+    margin: 0;
+  }
+  
+  
+  
+  
+  .section {
+    padding: 5rem;
+  }
+  
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  
+  .progress {
+    background: #363636;
+    border-radius: 0.2rem;
+    height: 3px;
+    margin-bottom: 30px;
+  }
+  
+  
+  .progress .progress-bar {
+    position: relative;
+    height: 100%;
+    background-color: #ffffff;
+  }
+  
+  .progress .progress-bar span {
+    font-size: 20px;
+    position: absolute;
+    right: -15px;
+    bottom: -30px;
+  }
+  
+  
+  .progress .progress-bar:after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: -4px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #4b4b4b;
+  }
+  
+
+
+  .img-holder {
+    margin: 0 auto;
+  text-align: center;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    /* padding-left: 0px; */
+  }
+  
+  .img-holder img {
+    width: 100%;
+    max-width: 620px;
+    margin-left: auto;
+    margin-right: +6.5rem;
+  }
+
+
+.text-left {
+    text-align: left;
+}
+
+
+.row {
+display: flex;
+}
+
+
+
+
