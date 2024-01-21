@@ -64,9 +64,13 @@
             <div>
                 <button>Zarejestruj</button>
             </div>
-            <% if(error) { %>
+            <% if(error == 'taken') { %>
                 <div class='message'>
                     <strong>Login zajęty!</strong>
+                </div>
+            <% } else if (error == 'empty') { %>
+                <div class='message'>
+                    <strong>Login i hasło nie mogą być puste!</strong>
                 </div>
             <% } %>
             <% if(signed) { %>
