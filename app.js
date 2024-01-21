@@ -1,14 +1,15 @@
 const express        = require('express');
 const cookieParser   = require('cookie-parser');
 const session        = require('express-session');
-const authorize      = require('./src/authorize');
-const pool           = require('./src/db')
+const showProducts   = require('./src/showProducts')
+const browser        = require('./src/browser');
+const authenticate   = require('./src/authenticate');
+const cart           = require('./src/cart');
 const login          = require('./src/login');
 const register       = require('./src/register');
-const authenticate   = require('./src/authenticate');
 const productManager = require('./src/productManager');
 const userManager    = require('./src/userManager');
-const browser        = require('./src/browser');
+const showOrders     = require('./src/showOrders');
 
 // Express setup
 const app = express();
@@ -31,77 +32,18 @@ app.get('/', (req, res) => {
     res.render('index', {login: req.session.valid, admin: req.session.admin});
 });
 
-app.get('/produkty', (req, res) => {
-    (async function main() {
-        try {
-            var result = await pool.query('select * from products');
-            res.render('products', { login: req.session.valid, admin: req.session.admin, result: result });
-        }
-        catch (err) {
-            console.log(err);
-        }
-    })();
-});
+// show products
+app.get('/produkty', showProducts);
 
 // browser
 app.get('/szukaj', browser.browserDefaultView);
 app.post('/szukaj', browser.showResults);
 
 // cart
-app.get('/zakup/:id', authenticate('user'), function (req, res) {
-    (async function main() {
-        try {
-            var id = req.param('id');
-
-            await pool.query(`INSERT INTO orders (status, userid, productid) VALUES ('in cart', ${req.session.userid}, ${id})`);
-            res.redirect('/koszyk');
-        }
-        catch (err) {
-            console.log(err);
-        }
-    })();
-});
-
-app.get('/koszyk', authenticate('user'), (req, res) => {
-    (async function main() {
-        try {
-            var result = await pool.query(`select * from orders join products on userid = '${req.session.userid}'
-                                                    and orders.productid = products.id
-                                                    and orders.status = 'in cart'`);
-            res.render('cart', { login: req.session.valid, admin: req.session.admin, result: result, done: false });
-        }
-        catch (err) {
-            console.log(err);
-        }
-    })();
-});
-
-app.get('/koszyk-zamow', function (req, res) {
-    (async function main() {
-        try {
-            var result = await pool.query(`SELECT SUM(price) AS final_price FROM orders join products on userid = ${req.session.userid} and orders.productid = products.id and orders.status = 'in cart'`);
-            // await pool.query(`DELETE FROM orders WHERE userid = ${req.session.userid}`);
-            await pool.query(`UPDATE orders SET status = 'ordered' WHERE userid = ${req.session.userid}`);
-            res.render('cart', { login: req.session.valid, admin: req.session.admin, price:  result.rows[0].final_price, done: true });
-        }
-        catch (err) {
-            console.log(err);
-        }
-    })();
-});
-
-app.get('/koszyk-usun/:id', authenticate('user'), function (req, res) {
-    (async function main() {
-        try {
-            var id = req.param('id');
-            await pool.query(`DELETE FROM orders where orderid = ${id}`);
-            res.redirect('/koszyk');
-        }
-        catch (err) {
-            console.log(err);
-        }
-    })();
-});
+app.get('/zakup/:id', authenticate('user'), cart.addToCart);
+app.get('/koszyk', authenticate('user'), cart.showCart);
+app.get('/koszyk-zamow', authenticate('user'), cart.placeOrder);
+app.get('/koszyk-usun/:id', authenticate('user'), cart.removeFromCart);
 
 // login
 app.get('/login', function (req, res) {
@@ -110,12 +52,20 @@ app.get('/login', function (req, res) {
 
 app.post('/login', login);
 
+// register
 app.get('/register', function (req, res) {
-    res.render('signin', {login: req.session.valid, admin: req.session.admin, error: false, signed: false, admin: req.session.admin, login: req.session.valid});
+    res.render('signin', {
+        login: req.session.valid,
+        admin: req.session.admin,
+        error: false,
+        signed: false,
+        admin: req.session.admin,
+        login: req.session.valid});
 });
 
 app.post('/register', register);
 
+// logout
 app.get('/logout', (req, res) => {
     req.session.destroy()
     res.redirect('/')
@@ -144,25 +94,13 @@ app.post('/edytuj-uzytkownik/:id', authenticate('admin'), userManager.editUser);
 
 app.get('/usun-uzytkownik/:id', authenticate('admin'), userManager.deleteUser);
 
-app.get('/show-orders', authenticate('admin'), (req, res) => {
-    (async function main() {
-        try {
-            var userids = await pool.query('select id from users');
-            var result = [];
-            for(let i = 0; i < userids.rows.length; i++) {
-                var orders = await pool.query(`select * from orders join products on orders.productid = products.id where userid = ${userids.rows[i].id}`);
-                result.push(orders);
-            }
-            res.render('orders', { login: req.session.valid, admin: req.session.admin, result: result });
-        }
-        catch (err) {
-            console.log(err);
-        }
-    })();
-});
+// show orders
+app.get('/show-orders', authenticate('admin'), showOrders);
+
 // unsupported route
 app.use((req, res, next) => {
     res.status(404).render('404', { url : req.url});
 });
 
+// start server
 app.listen(port, () => console.log(`Server started on port ${port}`));
