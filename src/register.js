@@ -1,4 +1,5 @@
-const pool = require('./db')
+const pool = require('./db');
+const bcrypt = require('bcrypt');
 
 function register(req, res) {
     const login = req.body.login.toString();
@@ -17,7 +18,8 @@ function register(req, res) {
                 res.render('signin', {login: req.session.valid, admin: req.session.admin, error: 'taken', signed: false});
             }
             else {
-                await pool.query(`INSERT INTO users (username, password) VALUES ('${login}', '${password}')`);
+                const hashedPassword = await bcrypt.hash(password, 10);
+                await pool.query(`INSERT INTO users (username, password) VALUES ('${login}', '${hashedPassword}')`);
                 res.render('signin', {login: req.session.valid, admin: req.session.admin, error: false, signed: true});
             }
         }

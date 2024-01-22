@@ -3,7 +3,7 @@ const pool = require('./db');
 function addToCart(req, res) {
     (async function () {
         try {
-            var id = req.param('id');
+            var id = req.params.id;
 
             await pool.query(`INSERT INTO orders (status, userid, productid) VALUES ('in cart', ${req.session.userid}, ${id})`);
             res.redirect('/koszyk');
@@ -48,7 +48,7 @@ function placeOrder(req, res) {
 function removeFromCart(req, res) {
     (async function main() {
         try {
-            var id = req.param('id');
+            var id = req.params.id;
             await pool.query(`DELETE FROM orders where orderid = ${id}`);
             res.redirect('/koszyk');
         }

@@ -1,5 +1,6 @@
 const pool = require('./db');
 const admin = require('./admin');
+const bcrypt = require('bcrypt');
 
 function setUpLoggedSession(session, username, userId, isAdmin=false) {
     session.username = username;
@@ -24,9 +25,9 @@ function login(req, res) {
     } else {
         (async function main() {
             try {
-                const result = await pool.query(`SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`);
+                const result = await pool.query(`SELECT id, password FROM users WHERE username = '${username}'`);
 
-                if (result.rows.length > 0) {
+                if (result.rows.length == 1 && await bcrypt.compare(password, result.rows[0].password)) {
                     setUpLoggedSession(req.session, username, result.rows[0].id);
                     res.redirect('/');
                 }
